@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VortexAI Studio — User Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+@page {
+    size: 720px 1020px;
+    margin: 0;
+}
+:root {
+    --c-bg: #0f0e1a;
+    --c-bg-2: #161427;
+    --c-card: #1c1a2e;
+    --c-text: #e8e6f0;
+    --c-muted: #9893b8;
+    --c-accent: #a855f7;
+    --c-accent-2: #f59e0b;
+    --c-border: rgba(168, 85, 247, 0.15);
+    --c-success: #34d399;
+    --c-danger: #f87171;
+}
+* { box-sizing: border-box; }
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 720px;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+@media screen {
+    html {
+        height: auto;
+        display: flex;
+        justify-content: center;
+        background: #222;
+    }
+    body {
+        margin: 20px auto;
+        box-shadow: 0 0 60px rgba(168, 85, 247, 0.15);
+    }
+}
+
+/* ---------- COVER ---------- */
+.cover {
+    width: 720px;
+    height: 1020px;
+    box-sizing: border-box;
+    break-after: page;
+    overflow: hidden;
+    position: relative;
+    background: radial-gradient(ellipse at 30% 20%, rgba(168, 85, 247, 0.25), transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.15), transparent 55%),
+                var(--c-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 70px 65px;
+}
+.cover::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        linear-gradient(rgba(168, 85, 247, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+.cover-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+}
+.cover-circle.c1 { width: 300px; height: 300px; background: var(--c-accent); top: -60px; right: -60px; }
+.cover-circle.c2 { width: 250px; height: 250px; background: var(--c-accent-2); bottom: -40px; left: -40px; opacity: 0.25; }
+.cover-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--c-accent);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    width: fit-content;
+    margin-bottom: 32px;
+}
+.cover-badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    box-shadow: 0 0 10px var(--c-accent);
+}
+.cover-title {
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    background: linear-gradient(135deg, #fff 30%, var(--c-accent) 70%, var(--c-accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.cover-subtitle {
+    position: relative;
+    font-size: 19px;
+    font-weight: 300;
+    color: var(--c-muted);
+    line-height: 1.5;
+    max-width: 480px;
+    margin: 0 0 48px;
+}
+.cover-meta {
+    position: relative;
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+.cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.cover-meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    opacity: 0.7;
+}
+.cover-meta-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-text);
+}
+.cover-footer {
+    position: absolute;
+    bottom: 50px;
+    left: 65px;
+    right: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--c-muted);
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+}
+.cover-footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--c-accent);
+    opacity: 0.8;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.main-content {
+    padding: 60px 60px 50px 60px;
+}
+
+/* Chapter headers */
+.chapter-header {
+    break-after: avoid;
+    break-inside: avoid;
+    margin-top: 28px;
+    margin-bottom: 20px;
+}
+.chapter-header:first-child { margin-top: 0; }
+.section-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--c-text);
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+}
+.divider {
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--c-accent), var(--c-accent-2));
+    border-radius: 2px;
+    margin-bottom: 18px;
+}
+
+/* Body text */
+.body-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--c-text);
+    margin: 0 0 14px;
+}
+.body-text strong { color: var(--c-accent-2); font-weight: 600; }
+.body-text em { color: var(--c-muted); font-style: italic; }
+
+/* Subsection */
+.subsection-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-text);
+    margin: 22px 0 10px;
+    break-after: avoid;
+}
+
+/* Cards */
+.card {
+    break-inside: avoid;
+    background: var(--c-card);
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+}
+.card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-accent);
+    margin: 0 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    background: rgba(168, 85, 247, 0.12);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.card-text {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--c-muted);
+    margin: 0;
+}
+
+/* Feature grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+}
+.feature-item {
+    break-inside: avoid;
+    background: var(--c-card);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    padding: 14px;
+}
+.feature-item-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-text);
+    margin: 0 0 4px;
+}
+.feature-item-desc {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--c-muted);
+    margin: 0;
+}
+
+/* Style chips */
+.style-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 14px 0;
+}
+.style-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid var(--c-border);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-text);
+}
+.style-chip .emoji { font-size: 13px; }
+
+/* Steps */
+.steps {
+    margin: 14px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+}
+.steps li {
+    break-inside: avoid;
+    counter-increment: step;
+    padding: 10px 0 10px 44px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--c-text);
+    border-left: 2px solid var(--c-border);
+    margin-left: 16px;
+    padding-left: 28px;
+}
+.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: -15px;
+    top: 8px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--c-bg);
+}
+.steps li strong { color: var(--c-accent-2); }
+
+/* Callout */
+.callout {
+    break-inside: avoid;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(245, 158, 11, 0.05));
+    border: 1px solid var(--c-border);
+    border-left: 3px solid var(--c-accent);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--c-text);
+}
+.callout-warning {
+    border-left-color: var(--c-accent-2);
+    background: rgba(245, 158, 11, 0.06);
+}
+.callout-danger {
+    border-left-color: var(--c-danger);
+    background: rgba(248, 113, 113, 0.06);
+}
+.callout-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-accent);
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.callout-warning .callout-title { color: var(--c-accent-2); }
+.callout-danger .callout-title { color: var(--c-danger); }
+
+/* Table */
+.table {
+    break-inside: avoid;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+}
+.table th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--c-card);
+    color: var(--c-accent);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--c-border);
+}
+.table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--c-border);
+    color: var(--c-text);
+    line-height: 1.5;
+}
+.table td:first-child { font-weight: 600; color: var(--c-accent-2); }
+.table tr:last-child td { border-bottom: none; }
+
+/* Code */
+.code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: rgba(168, 85, 247, 0.08);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--c-accent-2);
+}
+
+/* ---------- ENDING ---------- */
+.ending {
+    width: 720px;
+    height: 1020px;
+    box-sizing: border-box;
+    break-before: page;
+    overflow: hidden;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.2), transparent 60%), var(--c-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 70px;
+}
+.ending::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(168, 85, 247, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+.ending-big {
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.15;
+    margin: 0 0 20px;
+    background: linear-gradient(135deg, #fff, var(--c-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.ending-text {
+    position: relative;
+    font-size: 16px;
+    color: var(--c-muted);
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 0 0 36px;
+}
+.ending-divider {
+    position: relative;
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--c-accent), var(--c-accent-2));
+    border-radius: 2px;
+    margin: 0 0 24px;
+}
+.ending-brand {
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--c-accent);
+}
+.ending-meta {
+    position: absolute;
+    bottom: 50px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: var(--c-muted);
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+    <div class="cover-circle c1"></div>
+    <div class="cover-circle c2"></div>
+
+    <div class="cover-badge">User Guide</div>
+    <h1 class="cover-title">VortexAI<br>Studio</h1>
+    <p class="cover-subtitle">The complete, free AI video production studio — powered exclusively by Z.ai. Generate, direct, edit, and voice cinematic videos with no subscriptions, no credits, and no limits on creativity.</p>
+
+    <div class="cover-meta">
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Version</span>
+            <span class="cover-meta-value">2.0</span>
+        </div>
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Engine</span>
+            <span class="cover-meta-value">Z.ai</span>
+        </div>
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Access</span>
+            <span class="cover-meta-value">100% Free</span>
+        </div>
+    </div>
+
+    <div class="cover-footer">
+        <span>VortexAI Studio — Complete User Guide</span>
+        <span class="cover-footer-brand">Powered by Z.ai</span>
+    </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="main-content">
+
+    <!-- Chapter 1: Welcome -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 01</div>
+        <h2 class="section-title">Welcome to VortexAI Studio</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">VortexAI Studio is a complete, production-ready AI video production platform that puts a full creative studio in your browser. Every feature is <strong>100% free for every registered user</strong> — there are no subscriptions, no credit packs, no paywalls, and no premium tiers. The entire platform is powered exclusively by <strong>Z.ai</strong>, the central AI engine, whose API credentials are configured by the platform owner on the server. You never need to purchase your own API key or connect an external AI account.</p>
+
+    <p class="body-text">The studio provides a complete video production pipeline: text-to-video, image-to-video, multi-reference video generation, AI image creation and editing, AI Director for one-click automated productions, script and storyboard generation, AI voiceovers, a browser-based video editor with server-side FFmpeg rendering, batch generation, reusable character and brand libraries, and a comprehensive administrator control panel.</p>
+
+    <p class="body-text">This guide walks you through every feature, every workflow, and every menu — from creating your first account to producing a complete multi-scene animated video with voiceover and editing. It also covers the platform's fair-use limits, troubleshooting common errors, and honest capability notes about what AI video generation can and cannot do today.</p>
+
+    <div class="callout">
+        <div class="callout-title">Free Platform Promise</div>
+        All registered users receive equal access to every AI tool. The administrator can configure reasonable fair-use limits (daily generation caps, concurrency, storage) to protect the owner's API balance, but no user is ever asked to pay. Free access does not mean unlimited API usage — it means equal, free access to the available functionality.
+    </div>
+
+    <!-- Chapter 2: Getting Started -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 02</div>
+        <h2 class="section-title">Getting Started</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">Getting started takes under a minute. The first account registered on the platform automatically becomes the administrator with full access to the Admin Control Panel. Every subsequent registration is a standard user account with equal free access to all creative tools.</p>
+
+    <div class="subsection-title">Creating Your Account</div>
+    <ol class="steps">
+        <li><strong>Open the studio</strong> — Navigate to the platform URL in your browser. You'll see the welcome screen with a sign-in form.</li>
+        <li><strong>Switch to "Create account"</strong> — Click the "Create account" tab at the top of the sign-in card.</li>
+        <li><strong>Enter your details</strong> — Provide a display name, your email address, and a password (minimum 6 characters).</li>
+        <li><strong>Submit</strong> — Click "Create free account." You'll be signed in immediately and land on the dashboard.</li>
+    </ol>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Admin Account</div>
+        The very first account registered becomes the platform administrator. If you're setting up the platform for the first time, create your account first to claim admin rights. Admins can manage users, configure settings, and monitor all generation activity.
+    </div>
+
+    <div class="subsection-title">Signing In</div>
+    <p class="body-text">Returning users simply enter their email and password on the "Sign in" tab. Sessions persist for 30 days, so you'll stay logged in across browser restarts. You can sign out anytime from the user menu in the top-right corner.</p>
+
+    <div class="subsection-title">Theme Toggle</div>
+    <p class="body-text">VortexAI Studio supports both dark and light themes. Click the sun/moon icon in the top bar to switch. The dark theme is default and recommended for creative work — it reduces eye strain and makes video previews pop. Your preference is remembered across sessions.</p>
+
+    <!-- Chapter 3: Navigation -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 03</div>
+        <h2 class="section-title">Navigation & Layout</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The studio uses a sidebar-driven layout. The left sidebar organizes all features into four groups: <strong>Overview</strong>, <strong>Create</strong>, <strong>Studio</strong>, and <strong>Library</strong>, plus an <strong>Account</strong> section at the bottom. On mobile and narrow screens, the sidebar collapses into a slide-out menu accessible via the hamburger icon in the top bar.</p>
+
+    <div class="subsection-title">Main Navigation</div>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <div class="feature-item-title">Dashboard</div>
+            <p class="feature-item-desc">Your studio overview: stats, recent projects, fair-use usage, and quick-start shortcuts.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">AI Video Generator</div>
+            <p class="feature-item-desc">Text-to-video, image-to-video, and multi-reference video generation with 16 style presets.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">AI Image Generator</div>
+            <p class="feature-item-desc">Text-to-image and image editing with style presets and a gallery of your work.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">AI Director</div>
+            <p class="feature-item-desc">One-click automated production: concept to script to scenes to final assembled video.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Script Generator</div>
+            <p class="feature-item-desc">Turn a one-line idea into a structured, scene-by-scene video script.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Storyboard</div>
+            <p class="feature-item-desc">Convert scripts into shot-by-shot storyboards with per-shot image and video generation.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">AI Voice Studio</div>
+            <p class="feature-item-desc">Natural multilingual text-to-speech with 7 voices, plus audio transcription (ASR).</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Prompt Assistant</div>
+            <p class="feature-item-desc">Enhance and craft professional prompts with structured, mode-specific output.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Video Editor</div>
+            <p class="feature-item-desc">Browser-based multi-clip timeline editor with server-side FFmpeg rendering.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Templates</div>
+            <p class="feature-item-desc">Save and reuse your favorite prompts across projects.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Character Library</div>
+            <p class="feature-item-desc">Reusable reference images for characters, products, logos, mascots, and styles.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Asset Library</div>
+            <p class="feature-item-desc">All your uploaded and generated media: images, videos, and audio in one place.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">My Projects</div>
+            <p class="feature-item-desc">Manage all your production projects with full asset and job history.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Settings</div>
+            <p class="feature-item-desc">Update your profile, change your password, and view account details.</p>
+        </div>
+    </div>
+
+    <!-- Chapter 4: Dashboard -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 04</div>
+        <h2 class="section-title">The Dashboard</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The dashboard is your studio command center. It provides a real-time overview of your creative activity, fair-use consumption, and quick access to every tool. The page is divided into four key sections: stat cards, quick-start shortcuts, fair-use and storage, and recent generations.</p>
+
+    <div class="subsection-title">Stat Cards</div>
+    <p class="body-text">Four cards at the top show your key metrics at a glance: total <strong>Projects</strong>, <strong>Videos generated</strong> (with completed job count), <strong>Images &amp; assets</strong> (total media count), and <strong>In progress</strong> (active generation jobs). These update automatically as you create.</p>
+
+    <div class="subsection-title">Quick Start</div>
+    <p class="body-text">Four large shortcut cards let you jump directly into the most common workflows: AI Video Generator, AI Image Generator, AI Director, and AI Voice Studio. Click any card to navigate to that tool instantly.</p>
+
+    <div class="subsection-title">Fair-Use &amp; Storage</div>
+    <p class="body-text">This panel shows your daily usage against the platform's fair-use limits: daily video, image, and text generation counts, plus your storage consumption. The bars fill as you use the platform and reset daily. These limits exist to protect the owner's Z.ai API balance — they're generous enough for normal creative work.</p>
+
+    <div class="subsection-title">Recent Generations</div>
+    <p class="body-text">A responsive grid of your latest AI jobs across all tools. Each card shows a thumbnail (video preview frame for videos, the image for images, a mic icon for audio), a status badge (completed, processing, failed), the prompt, and when it was created. Click "View all" to see the full history in My Projects.</p>
+
+    <!-- Chapter 5: AI Video Generator -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 05</div>
+        <h2 class="section-title">AI Video Generator</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The AI Video Generator is the core creative tool — a professional workspace for generating cinematic videos from text prompts or reference images using the Z.ai cogvideox-2 video engine. It supports three generation modes, 16 style presets, audio generation, and live progress tracking.</p>
+
+    <div class="subsection-title">Generation Modes</div>
+    <div class="card">
+        <div class="card-title"><span class="card-icon">T</span> Text to Video</div>
+        <p class="card-text">Describe the scene you want in natural language. The AI generates a cinematic video clip from your text prompt. Best for conceptual scenes, establishing shots, and abstract or imaginary content.</p>
+    </div>
+    <div class="card">
+        <div class="card-title"><span class="card-icon">I</span> Image to Video</div>
+        <p class="card-text">Upload a reference image (or select one from your Asset Library) as the first frame. The AI animates it forward. Best for animating character sheets, product photos, or scene references. The image is automatically resized to 1024px and converted to JPEG for optimal Z.ai processing.</p>
+    </div>
+    <div class="card">
+        <div class="card-title"><span class="card-icon">M</span> Multi-Reference</div>
+        <p class="card-text">Upload 2–4 reference images. The AI uses them collectively as visual context for the generation. Useful for combining character references with scene references, or for first-frame + last-frame style generation.</p>
+    </div>
+
+    <div class="subsection-title">Style Presets</div>
+    <p class="body-text">Style presets inject a rich style suffix into your prompt automatically, giving you instant access to professional-grade visual aesthetics without needing to write lengthy style descriptions. Select a chip above the prompt box; you'll see "Appending: ..." text confirming the style that will be added.</p>
+
+    <div class="style-grid">
+        <span class="style-chip"><span class="emoji">🎯</span> No style</span>
+        <span class="style-chip"><span class="emoji">🎬</span> Cinematic</span>
+        <span class="style-chip"><span class="emoji">🧸</span> 3D Animation</span>
+        <span class="style-chip"><span class="emoji">🌸</span> Anime</span>
+        <span class="style-chip"><span class="emoji">📷</span> Photorealistic</span>
+        <span class="style-chip"><span class="emoji">🪀</span> Claymation</span>
+        <span class="style-chip"><span class="emoji">🎨</span> Watercolor</span>
+        <span class="style-chip"><span class="emoji">🌃</span> Cyberpunk</span>
+        <span class="style-chip"><span class="emoji">📽️</span> Vintage Film</span>
+        <span class="style-chip"><span class="emoji">🕵️</span> Film Noir</span>
+        <span class="style-chip"><span class="emoji">🧙</span> Fantasy</span>
+        <span class="style-chip"><span class="emoji">🔷</span> Low Poly</span>
+        <span class="style-chip"><span class="emoji">👾</span> Pixel Art</span>
+        <span class="style-chip"><span class="emoji">🎥</span> Documentary</span>
+        <span class="style-chip"><span class="emoji">🎵</span> Music Video</span>
+        <span class="style-chip"><span class="emoji">🛍️</span> Product Ad</span>
+    </div>
+
+    <div class="subsection-title">Prompt Improvement</div>
+    <p class="body-text">Click the <strong>Improve</strong> button next to the prompt label to send your prompt to the Z.ai prompt assistant. It returns an enhanced, more cinematic version with suggested negative prompts and tags. This is excellent for beginners who want professional-quality results without deep prompt-engineering knowledge.</p>
+
+    <div class="subsection-title">Audio &amp; Advanced Parameters</div>
+    <p class="body-text">The <strong>Audio</strong> card lets you toggle ambient audio generation on or off (cogvideox supports AI-generated audio). The <strong>Advanced parameters</strong> card contains size, duration, fps, and quality controls — these are <strong>off by default</strong> because some models reject them with error code 1214. Enable them only if you know the model supports the specific values you're sending.</p>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Z.ai Video Rate Limit</div>
+        Z.ai's video endpoint has a strict rate limit — roughly 1 request every 5–10 minutes. If you submit too quickly, you'll see a friendly "Z.ai is rate-limiting video requests" message. Wait a few minutes and try again. The platform automatically retries once with a 2-minute backoff.
+    </div>
+
+    <div class="subsection-title">Tracking Your Generations</div>
+    <p class="body-text">The right panel shows "Your generations" — a live list of your video jobs. Each job card displays a video preview (with play overlay on hover), status badge, prompt, creation time, and a progress bar for in-progress jobs. Completed videos have a Download button; failed jobs can be cleaned up with the "Clean up failed" button that appears when failures exist.</p>
+
+    <!-- Chapter 6: AI Image Generator -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 06</div>
+        <h2 class="section-title">AI Image Generator</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The AI Image Generator creates high-quality images from text prompts or edits existing images with natural-language instructions. It uses Z.ai's image-flash model and supports the same 16 style presets as the video generator. Image generation runs asynchronously — the request returns instantly and the frontend polls until the image is ready, avoiding any gateway timeouts.</p>
+
+    <div class="subsection-title">Generate vs Edit Mode</div>
+    <p class="body-text">In <strong>Generate</strong> mode, enter a prompt and select a size; the AI creates a new image from scratch. In <strong>Edit</strong> mode, upload a source image first, then describe the changes you want (e.g., "make it sunset, add volumetric light, change the sky to a starry galaxy"). The AI edits the image according to your instructions.</p>
+
+    <div class="subsection-title">Supported Sizes</div>
+    <table class="table">
+        <tr><th>Aspect</th><th>Dimensions</th><th>Best For</th></tr>
+        <tr><td>1:1 Square</td><td>1024×1024</td><td>Social media, thumbnails, avatars</td></tr>
+        <tr><td>16:9 Landscape</td><td>1344×768</td><td>Video frames, widescreen content</td></tr>
+        <tr><td>9:16 Portrait</td><td>768×1344</td><td>Mobile video, stories, reels</td></tr>
+        <tr><td>2:1 Wide</td><td>1440×720</td><td>Cinematic widescreen, banners</td></tr>
+        <tr><td>1:2 Tall</td><td>720×1440</td><td>Tall posters, vertical displays</td></tr>
+        <tr><td>4:3 Classic</td><td>1152×864</td><td>Traditional photography ratio</td></tr>
+        <tr><td>3:4 Portrait</td><td>864×1152</td><td>Portrait photography, prints</td></tr>
+    </table>
+
+    <div class="subsection-title">Gallery</div>
+    <p class="body-text">All generated images appear in the gallery grid on the right. Click any image to open a larger preview dialog with download options. The gallery shows your 24 most recent images and can be refreshed manually. Every image is automatically saved to your Asset Library.</p>
+
+    <!-- Chapter 7: AI Director -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 07</div>
+        <h2 class="section-title">AI Director — One-Click Production</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">AI Director is the platform's signature feature. Enter a simple concept, and the AI automatically plans, scripts, storyboards, generates reference images, produces voiceovers, creates individual video clips, and assembles them into a final production. It's a full automated pipeline in four stages.</p>
+
+    <div class="subsection-title">The Four-Stage Pipeline</div>
+    <ol class="steps">
+        <li><strong>Concept</strong> — Enter your idea and pick a style preset (Cinematic, Product Ad, Social Media, etc.). The AI analyzes your concept and develops a full production plan with title, logline, style, and scene breakdown.</li>
+        <li><strong>Plan &amp; Script</strong> — Review the AI-generated plan: scene headings, narration, image prompts, and video prompts — all editable inline. Tweak any field before generation. Regenerate the plan or proceed to generation.</li>
+        <li><strong>Asset Generation</strong> — For each scene, the pipeline runs sequentially: generates a reference image, creates a voiceover (TTS), then submits a video generation job using the image as the first frame. Live status indicators show each scene's progress.</li>
+        <li><strong>Assemble &amp; Review</strong> — Once all scenes complete, review them in a filmstrip view. Play each scene, then open the Video Editor to combine them into one final video with transitions. Save the project to your dashboard.</li>
+    </ol>
+
+    <div class="callout">
+        <div class="callout-title">Pause &amp; Resume</div>
+        The pipeline supports Pause and Resume controls. If you need to step away or manage the Z.ai rate limit, pause the pipeline at any point — it will finish the current scene and wait. Resume when ready. Individual scenes can also be retried if they fail.
+    </div>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Honest Capability Note</div>
+        AI Director produces a creative video inspired by your concept. The Z.ai cogvideox model cannot guarantee that multiple distinct characters maintain exact identity, clothing, and appearance across scenes — no model in this class can do multi-character identity preservation from a text prompt. Each scene will be visually inspired by your descriptions but not pixel-perfect consistent.
+    </div>
+
+    <!-- Chapter 8: Script & Storyboard -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 08</div>
+        <h2 class="section-title">Script Generator &amp; Storyboard</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Script Generator and Storyboard tools use Z.ai's text model (glm-4.6) to produce structured, production-ready content. Both return structured JSON that the UI renders as beautiful, editable cards.</p>
+
+    <div class="subsection-title">Script Generator</div>
+    <p class="body-text">Enter a one-line idea and select a genre/style (Cinematic, Product Ad, Tutorial, Documentary, Social Media, Story). The AI returns a structured script with a title, logline, and 3–6 scenes — each with a heading, narration, visual prompt, and duration. Every scene has a "Generate video from this scene" button that jumps to the Video Generator. Scripts can be copied or saved as projects.</p>
+
+    <div class="subsection-title">Storyboard</div>
+    <p class="body-text">Paste a script or describe your video, and the AI converts it into a shot-by-shot storyboard. Each shot includes a shot type (wide, medium, close-up), visual prompt, camera movement, and duration. Shots render in a vertical timeline. Each shot has "Generate image" and "Generate video" buttons for instant asset creation directly from the storyboard.</p>
+
+    <!-- Chapter 9: AI Voice Studio -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 09</div>
+        <h2 class="section-title">AI Voice Studio</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The AI Voice Studio provides natural text-to-speech (TTS) generation and audio transcription (ASR) using Z.ai's cogtts model. Generate voiceovers for your videos, narrate scripts, or transcribe uploaded audio files.</p>
+
+    <div class="subsection-title">Text to Speech</div>
+    <p class="body-text">Enter text (up to 1024 characters), select a voice, adjust the speed (0.5–2.0), and generate. A live character counter shows your usage against the limit. Generated audio appears in a list below with an inline audio player and download link.</p>
+
+    <table class="table">
+        <tr><th>Voice</th><th>Character</th></tr>
+        <tr><td>Tongtong</td><td>Warm &amp; friendly (default)</td></tr>
+        <tr><td>Chuichui</td><td>Lively &amp; cute</td></tr>
+        <tr><td>Xiaochen</td><td>Steady &amp; professional</td></tr>
+        <tr><td>Jam</td><td>British gentleman</td></tr>
+        <tr><td>Kazi</td><td>Clear &amp; standard</td></tr>
+        <tr><td>Douji</td><td>Natural &amp; fluent</td></tr>
+        <tr><td>Luodo</td><td>Expressive &amp; dramatic</td></tr>
+    </table>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Format Note</div>
+        Z.ai's TTS supports <strong>WAV</strong> and <strong>PCM</strong> formats only. MP3 is not supported (error 1214). The platform defaults to WAV, which plays in all modern browsers. The format dropdown shows MP3 as disabled with a note.
+    </div>
+
+    <div class="subsection-title">Audio Transcription (ASR)</div>
+    <p class="body-text">Upload an audio file, and the AI transcribes it to text. The transcript appears in a card with a copy button. Useful for adding subtitles to videos or converting voice notes to text.</p>
+
+    <!-- Chapter 10: Prompt Assistant -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 10</div>
+        <h2 class="section-title">Prompt Assistant</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Prompt Assistant is an intelligent prompt-engineering tool powered by Z.ai's text model. It helps you craft professional, vivid prompts for video and image generation — even if you've never written a prompt before.</p>
+
+    <div class="subsection-title">Five Modes</div>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <div class="feature-item-title">Improve Prompt</div>
+            <p class="feature-item-desc">Rewrites your prompt into a vivid, detailed generation prompt with negative prompt suggestions and tags.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Cinematic</div>
+            <p class="feature-item-desc">Crafts a cinematic shot prompt with shot type, lens, lighting, color grade, and camera movement.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Advertising</div>
+            <p class="feature-item-desc">Creates a product-ad prompt with product focus, mood, and commercial lighting.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Character</div>
+            <p class="feature-item-desc">Designs a character description with appearance, clothing, expression, and camera.</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Scene</div>
+            <p class="feature-item-desc">Builds a scene prompt with setting, time of day, weather, and mood.</p>
+        </div>
+    </div>
+
+    <p class="body-text">Each mode returns structured JSON with mode-specific fields (shot type, lens, color grade, lighting, negative prompt, etc.). Results can be copied, used directly in the Video Generator, or saved as reusable templates. A sidebar lists your saved and public templates for one-click loading.</p>
+
+    <!-- Chapter 11: Video Editor -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 11</div>
+        <h2 class="section-title">Video Editor</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Video Editor is a browser-based editing studio with server-side FFmpeg rendering. Arrange clips on a timeline, trim and reorder them, add text overlays, then render a final video — all without leaving your browser. The rendering happens on the server using FFmpeg, so your device's performance doesn't limit the output quality.</p>
+
+    <div class="subsection-title">Timeline &amp; Clips</div>
+    <p class="body-text">Add media from the left panel (your uploaded and generated videos/images) to the timeline. Each clip shows its type, name, and duration. Video clips can be trimmed with start/end times; image clips have a configurable display duration. Use the up/down arrows to reorder clips. The total duration updates live.</p>
+
+    <div class="subsection-title">Text Overlays</div>
+    <p class="body-text">Add text overlays with configurable position (x, y), font size, and color. Overlays are burned into the final video during rendering using FFmpeg's drawtext filter. A live preview shows where each overlay will appear on the video.</p>
+
+    <div class="subsection-title">Export Settings</div>
+    <p class="body-text">Choose your output resolution (720p, 1080p, square, or vertical), frame rate (24, 30, or 60 fps), and audio toggle. Click <strong>Render Video</strong> — the server normalizes each clip to the target resolution and fps, concatenates them, applies text overlays, and returns a downloadable MP4. Rendered videos appear in the right panel with download links.</p>
+
+    <div class="callout">
+        <div class="callout-title">Combining AI Director Scenes</div>
+        The Video Editor is the perfect tool for combining the scenes generated by AI Director into one final video. Add all scene clips to the timeline in order, set the resolution, and render. The result is a single, seamless video you can download and share.
+    </div>
+
+    <!-- Chapter 12: Libraries -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 12</div>
+        <h2 class="section-title">Libraries &amp; Projects</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="subsection-title">Character Library</div>
+    <p class="body-text">Build a reusable library of reference images: characters, products, logos, mascots, clothing, backgrounds, and visual styles. Each item has a name, category, description, and reference image. Items can be used across all your projects — click "Use in Video Generator" to load a character's reference image directly into image-to-video generation.</p>
+
+    <div class="subsection-title">Asset Library</div>
+    <p class="body-text">All your media in one place. Filter by type (Images, Videos, Audio), upload new files, preview in dialogs, and download or delete. Every AI-generated asset is automatically saved here with its source prompt recorded in the metadata. Uploads support images, videos, and audio up to the configured size limit.</p>
+
+    <div class="subsection-title">Templates</div>
+    <p class="body-text">Save your best prompts as reusable templates. Each template has a title, content, category, and public/private flag. Public templates are visible to all users; private ones are only yours. Load a template into the Prompt Assistant with one click to jumpstart your next creation.</p>
+
+    <div class="subsection-title">My Projects</div>
+    <p class="body-text">Every generation creates or updates a project. Projects group related jobs and assets together — for example, an AI Director production has all its scene images, voiceovers, and videos under one project. Click any project to see its full config, related assets, and actions (open in generator, archive, delete).</p>
+
+    <!-- Chapter 13: Settings -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 13</div>
+        <h2 class="section-title">Settings &amp; Account</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Settings page lets you manage your account. Update your display name and avatar URL, change your password (requires current password verification), and view your account details including role, status, and member-since date. All accounts are free with equal access — there are no tiers or upgrades.</p>
+
+    <!-- Chapter 14: Admin Panel -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 14</div>
+        <h2 class="section-title">Admin Control Panel</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Admin Panel (visible only to admin users) provides full control over the platform. It has five tabs: Overview, Users, Jobs, Settings, and API.</p>
+
+    <div class="subsection-title">Overview</div>
+    <p class="body-text">Platform-wide analytics: total users, jobs, assets, projects, storage consumption, and active users in the last 7 days. Charts show daily API requests over 14 days, usage by type (pie chart), job status distribution (bar chart), and the most-used models. A table of recent jobs across all users rounds out the view.</p>
+
+    <div class="subsection-title">Users</div>
+    <p class="body-text">View, search, and manage all registered users. Change roles (user/admin), suspend or activate accounts, reset passwords, or delete accounts. Each user row shows their email, role, status, project/job/asset counts, and join date.</p>
+
+    <div class="subsection-title">Jobs</div>
+    <p class="body-text">Monitor all generation jobs across all users. Filter by status (processing, completed, failed, submitted). Cancel in-progress jobs or retry failed ones. View the prompt, user, and result URL for each job.</p>
+
+    <div class="subsection-title">Settings</div>
+    <p class="body-text">Configure platform-wide settings: maintenance mode, registration toggle, announcement banner, fair-use limits (daily video/image/text limits, concurrent jobs, storage limit, upload size), and default models for each capability. Changes apply immediately to all users.</p>
+
+    <div class="subsection-title">API</div>
+    <p class="body-text">Test Z.ai API connectivity, view the model catalogue with capabilities, and check infrastructure status. The API key is configured via server environment variables and is never exposed to the frontend.</p>
+
+    <!-- Chapter 15: Troubleshooting -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 15</div>
+        <h2 class="section-title">Troubleshooting</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="subsection-title">Error Code 429 — Rate Limit</div>
+    <div class="callout callout-warning">
+        <div class="callout-title">Z.ai Rate Limit</div>
+        Z.ai's video endpoint has a strict rate limit (roughly 1 request every 5–10 minutes). Image and text endpoints are more lenient. If you see "Z.ai is rate-limiting video requests," wait a few minutes and try again. The platform automatically retries once with a 2-minute backoff.
+    </div>
+
+    <div class="subsection-title">Error Code 1214 — Parameter Rejected</div>
+    <p class="body-text">This means Z.ai rejected a parameter in your request. Common causes: sending MP3 format to TTS (use WAV instead), or sending size/duration/fps/quality parameters that the model doesn't support. The platform handles this automatically — advanced parameters are off by default, and TTS defaults to WAV.</p>
+
+    <div class="subsection-title">Error Code 1210 — API Parameter Error</div>
+    <p class="body-text">Usually caused by image-to-video with a localhost URL (Z.ai's servers can't reach localhost). The platform automatically converts local images to base64 data URIs and resizes them to 1024px before sending. If you still see this, try a different reference image.</p>
+
+    <div class="subsection-title">502 Bad Gateway</div>
+    <p class="body-text">This was a previous issue with image generation timing out at the gateway. It has been fixed — image generation now runs asynchronously (returns instantly, polls for completion). If you encounter a 502 on any other endpoint, it likely means the operation took longer than 30 seconds; wait a moment and retry.</p>
+
+    <div class="subsection-title">Stuck "Processing" Jobs</div>
+    <p class="body-text">If a video job stays in "processing" for over an hour, it likely failed silently due to rate limits. Use the "Clean up failed" button in the Video Generator to remove stuck and failed jobs. Jobs stuck for over an hour are automatically cleaned up by the cleanup endpoint.</p>
+
+    <div class="subsection-title">Videos Not Appearing</div>
+    <p class="body-text">All completed videos are saved to your Asset Library and appear in the Video Generator's "Your generations" panel. If a video is missing, check the Asset Library (filter by Videos) or My Projects. The dashboard's "Recent generations" also shows your latest completed jobs with thumbnails.</p>
+
+    <!-- Chapter 16: Fair Use -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 16</div>
+        <h2 class="section-title">Fair Use &amp; Limits</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">VortexAI Studio is free for every user, but the platform enforces reasonable fair-use limits to protect the owner's Z.ai API balance and infrastructure. These limits are generous enough for normal creative work and reset daily.</p>
+
+    <table class="table">
+        <tr><th>Limit</th><th>Default</th><th>Notes</th></tr>
+        <tr><td>Daily video generations</td><td>20 / user</td><td>Resets at midnight (your timezone)</td></tr>
+        <tr><td>Daily image generations</td><td>60 / user</td><td>Resets at midnight</td></tr>
+        <tr><td>Daily text generations</td><td>200 / user</td><td>Scripts, prompts, storyboard</td></tr>
+        <tr><td>Concurrent jobs</td><td>2 / user</td><td>Active video/image jobs at once</td></tr>
+        <tr><td>Storage limit</td><td>1024 MB / user</td><td>All uploaded + generated media</td></tr>
+        <tr><td>Max upload size</td><td>50 MB / file</td><td>Per individual file upload</td></tr>
+    </table>
+
+    <p class="body-text">Admins can adjust all these limits in the Admin Panel → Settings tab. The dashboard shows your current daily usage against these limits in real time. If you hit a limit, the platform shows a clear message telling you which limit was reached and when it resets.</p>
+
+    <!-- Chapter 17: Honest Capabilities -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 17</div>
+        <h2 class="section-title">Honest Capability Notes</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">VortexAI Studio is built on a principle of honesty: we never claim capabilities the AI cannot deliver, and we never show fake results. Here's what the Z.ai engine can and cannot do today, so you can set realistic expectations.</p>
+
+    <div class="subsection-title">What the AI Can Do</div>
+    <div class="card">
+        <div class="card-title">Video Generation</div>
+        <p class="card-text">Generate high-quality cinematic clips from text prompts, animate reference images as first frames, produce 4–10 second clips with optional audio, and follow camera, lighting, environment, and motion instructions well.</p>
+    </div>
+    <div class="card">
+        <div class="card-title">Image Generation</div>
+        <p class="card-text">Create detailed images in 7 aspect ratios, edit existing images with natural-language instructions, and produce results in 16 visual styles from cinematic to pixel art.</p>
+    </div>
+    <div class="card">
+        <div class="card-title">Text &amp; Voice</div>
+        <p class="card-text">Write structured scripts and storyboards, enhance prompts professionally, generate natural voiceovers in 7 voices, and transcribe audio to text.</p>
+    </div>
+
+    <div class="subsection-title">What the AI Cannot Do</div>
+    <div class="callout callout-danger">
+        <div class="callout-title">Multi-Character Identity Lock</div>
+        The Z.ai cogvideox model cannot guarantee that multiple distinct characters (e.g., 6 different characters in one scene) maintain exact identity, clothing, and appearance throughout a generated video. No model in this class can do multi-character identity preservation from a text prompt or single reference image. The platform will never claim otherwise.
+    </div>
+
+    <p class="body-text">Character consistency using a single reference image as the first frame works for the opening frame, but the model may drift as motion begins. For best results, use shorter clips (4–6 seconds), keep character counts low, and use the Video Editor to combine multiple short clips rather than expecting one long generation to stay consistent.</p>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">No Fake Results</div>
+        Every video, image, and voiceover you see in the platform is genuinely generated by Z.ai. There are no mockups, no stock footage, and no placeholder content. If a generation fails, you'll see a clear error — never a fake success.
+    </div>
+
+    <!-- Chapter 18: Music Video Workflow -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 18</div>
+        <h2 class="section-title">Music Video Studio</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Music Video Studio is a complete end-to-end workflow for turning any song into a cinematic music video. Upload a song, transcribe lyrics, plan scenes around the music, generate visual clips, and render a final video with the song as the continuous master audio track — all in five guided steps.</p>
+
+    <div class="subsection-title">The Five-Step Workflow</div>
+    <ol class="steps">
+        <li><strong>Upload Song</strong> — Upload an audio file (MP3, WAV, OGG, M4A) or choose from your Asset Library. Select a mode: Music Montage (visuals cut to the music) or Singing Characters (characters appear on screen, but mouths will NOT sync to vocals — this is a model limitation).</li>
+        <li><strong>Analyze Song</strong> — The platform probes the song's duration and attempts ASR transcription. Z.ai's ASR is optimized for speech, not music, so transcription may fail — in that case, paste lyrics manually. Detected timings are <strong>estimates</strong> and must be reviewed.</li>
+        <li><strong>Edit Lyrics</strong> — An editable lyric table with per-line start/end timestamps. Import or export SRT subtitles. Timings from ASR are labeled "ESTIMATED" in amber — review and correct them manually before rendering.</li>
+        <li><strong>Plan Scenes</strong> — The AI auto-generates 8-second scenes (with a shorter final scene) based on your lyrics and song duration. Each scene has a visual prompt, camera direction, and optional character assignment. Generate storyboard images and video clips per scene.</li>
+        <li><strong>Preview &amp; Export</strong> — The platform checks if your scenes cover the full song duration and warns about gaps. Choose resolution, transitions, lyric overlays, and render. The master song plays continuously as the audio track.</li>
+    </ol>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Honest Lip-Sync Note</div>
+        Z.ai's cogvideox model does NOT support audio-conditioned mouth or beak animation. "Singing Characters" mode produces music montage with characters present, but their mouths will NOT sync to vocals. The platform never labels results as "lip-synced" or "synchronized." This is a model limitation, not a bug — the UI clearly states "NOT SUPPORTED" throughout.
+    </div>
+
+    <div class="subsection-title">Duration Mismatch Detection</div>
+    <p class="body-text">Before rendering, the platform compares your scene coverage to the song duration. If your scenes cover only part of the song (e.g., an 8-second clip for a 2:59 song), you'll see a prominent warning: <em>"Your scenes cover only Xs of a Ys song. The final video will have gaps."</em> You can choose to render the excerpt or go back and generate more clips.</p>
+
+    <div class="subsection-title">SRT Import &amp; Export</div>
+    <p class="body-text">The lyric editor supports full SRT subtitle import and export. Import an existing SRT file to populate lyrics with verified timestamps, or export your edited lyrics as SRT for use in other tools. This is the recommended way to get accurate timing — ASR estimates are approximate only.</p>
+
+    <!-- Chapter 19: Video Extend -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 19</div>
+        <h2 class="section-title">Video Extend — Seamless Continuation</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Extend feature takes the last frame of an existing video and uses it as the first frame of a new generation — creating a seamless continuation, just like Google Veo's video extension. Since Z.ai cogvideox supports 5s or 10s clips, Extend lets you build longer videos by chaining clips together.</p>
+
+    <div class="subsection-title">How to Extend a Video</div>
+    <ol class="steps">
+        <li><strong>Generate a video</strong> — Create a 5s or 10s clip in the AI Video Generator</li>
+        <li><strong>Click "Extend"</strong> — The button appears on every completed video card. The last frame is extracted automatically using FFmpeg.</li>
+        <li><strong>Write what happens next</strong> — Describe the continuation (e.g., "the camera slowly pans up to reveal a starry sky")</li>
+        <li><strong>Generate</strong> — The new video starts where the old one ended</li>
+        <li><strong>Combine</strong> — Use the Video Editor to concatenate the original + extension into one seamless video</li>
+    </ol>
+
+    <div class="callout">
+        <div class="callout-title">Building 15-Second Videos</div>
+        Generate a 10s clip → Extend with a 5s continuation → Combine in the Video Editor. Result: a seamless 15-second video. Chain multiple extensions for even longer videos.
+    </div>
+
+    <!-- Chapter 20: Video Enhancement -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 20</div>
+        <h2 class="section-title">Video Enhancement — Post-Processing</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Enhance feature applies professional FFmpeg post-processing to any completed video, closing the quality gap with higher-end AI video tools. Click the <strong>✨ Enhance</strong> button on any completed video card to open the enhancement dialog.</p>
+
+    <div class="subsection-title">Available Enhancements</div>
+    <table class="table">
+        <tr><th>Enhancement</th><th>What It Does</th></tr>
+        <tr><td>Motion blur</td><td>Adds natural blur to moving elements — fixes the "AI frame generation" look</td></tr>
+        <tr><td>Frame interpolation</td><td>Smooths motion between AI-generated frames (minterpolate)</td></tr>
+        <tr><td>Color grading</td><td>6 looks: Vibrant, Cinematic, Warm, Cool, Vintage, None</td></tr>
+        <tr><td>Stabilization</td><td>Reduces frame-to-frame jitter (deshake)</td></tr>
+        <tr><td>Sharpening</td><td>Enhances detail without artifacts (unsharp mask)</td></tr>
+        <tr><td>Audio normalization</td><td>Broadcast-quality audio levels (loudnorm)</td></tr>
+    </table>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Honest Enhancement Note</div>
+        The Enhance feature applies post-processing — it significantly improves the viewing experience but cannot fundamentally change the AI model's output. Core differences like character identity lock, true cloth/hair simulation, and subsurface scattering are model-level capabilities that require a more advanced video model.
+    </div>
+
+    <!-- Chapter 21: From Script Mode -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 21</div>
+        <h2 class="section-title">From Script Mode — AI Script Understanding</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The "From Script" tab in the AI Video Generator lets you paste a full script and have the AI read, understand, and visualize it before generating a video. The AI identifies characters, setting, mood, key actions, and emotional beats, then produces an optimized video generation prompt.</p>
+
+    <div class="subsection-title">How It Works</div>
+    <ol class="steps">
+        <li><strong>Select the "From Script" tab</strong> — The 4th tab in Generation mode</li>
+        <li><strong>Paste your script</strong> — Any length, any format (screenplay, narration, story, etc.)</li>
+        <li><strong>Click "Understand Script"</strong> — The AI analyzes the script and returns: title, summary, characters, setting, mood, key actions, and an optimized video prompt</li>
+        <li><strong>Review the analysis</strong> — The AI's understanding is displayed in a structured card</li>
+        <li><strong>Edit and generate</strong> — The video prompt is auto-filled below; edit it if needed, then click Generate Video</li>
+    </ol>
+
+    <!-- Chapter 22: Background Music & Transitions -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 22</div>
+        <h2 class="section-title">Background Music &amp; Video Transitions</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="subsection-title">Background Music Library</div>
+    <p class="body-text">The Video Editor includes a curated library of 6 royalty-free background music tracks, procedurally generated using FFmpeg audio synthesis. Each track is 30 seconds, 128kbps MP3:</p>
+    <table class="table">
+        <tr><th>Track</th><th>Mood</th></tr>
+        <tr><td>Upbeat Corporate</td><td>Cheerful, bright</td></tr>
+        <tr><td>Cinematic Ambient</td><td>Slow, atmospheric</td></tr>
+        <tr><td>Acoustic Folk</td><td>Warm, gentle</td></tr>
+        <tr><td>Electronic Pulse</td><td>Energetic, modern</td></tr>
+        <tr><td>Peaceful Nature</td><td>Calm, meditative</td></tr>
+        <tr><td>Playful Children</td><td>Light, bouncy</td></tr>
+    </table>
+    <p class="body-text">Select a track in the Video Editor's right panel, adjust the volume (0-100%), and it's mixed into the final render using FFmpeg's amix filter. The music loops automatically for videos longer than 30 seconds.</p>
+
+    <div class="subsection-title">Video Transitions</div>
+    <p class="body-text">The Video Editor supports 11 transition types between clips, rendered using FFmpeg's xfade filter:</p>
+    <div class="style-grid">
+        <span class="style-chip">None (hard cut)</span>
+        <span class="style-chip">Fade</span>
+        <span class="style-chip">Dissolve</span>
+        <span class="style-chip">Slide Left</span>
+        <span class="style-chip">Slide Right</span>
+        <span class="style-chip">Slide Up</span>
+        <span class="style-chip">Slide Down</span>
+        <span class="style-chip">Circle Crop</span>
+        <span class="style-chip">Radial Wipe</span>
+        <span class="style-chip">Wipe Left</span>
+        <span class="style-chip">Wipe Right</span>
+    </div>
+    <p class="body-text">Adjustable transition duration (0.2s – 2.0s slider). Transitions are applied between each pair of clips with proper offset calculation based on each clip's probed duration.</p>
+
+    <!-- Chapter 23: Asset Management -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 23</div>
+        <h2 class="section-title">Asset Management — Rename &amp; Organize</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">Every asset in your Asset Library (videos, images, audio) can now be renamed for better organization. Click the <strong>✏️ pencil icon</strong> on any asset card, or use the "Rename" button in the preview dialog. Names can be up to 200 characters.</p>
+
+    <div class="subsection-title">Asset Card Actions</div>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <div class="feature-item-title">Download</div>
+            <p class="feature-item-desc">Direct download link on every asset card</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Rename</div>
+            <p class="feature-item-desc">Click the pencil icon to rename any asset</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Delete</div>
+            <p class="feature-item-desc">Remove assets with confirmation dialog</p>
+        </div>
+        <div class="feature-item">
+            <div class="feature-item-title">Preview</div>
+            <p class="feature-item-desc">Click any asset to open a full preview dialog</p>
+        </div>
+    </div>
+
+    <!-- Chapter 24: Updated Troubleshooting -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 24</div>
+        <h2 class="section-title">Updated Troubleshooting</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="subsection-title">Modal Won't Close</div>
+    <p class="body-text">If a preview dialog appears stuck, try: (1) click the X button at the top-right, (2) press the Escape key, or (3) click outside the dialog on the dark overlay. All three methods close the dialog. If none work, reload the page (F5).</p>
+
+    <div class="subsection-title">Blank Page / "Loading Studio…"</div>
+    <p class="body-text">If the page shows "Loading studio…" indefinitely, the dev server may have restarted after a code change. Press <strong>F5</strong> (or Cmd+R on Mac) to reload. The server recovers automatically — the crash protection prevents permanent death.</p>
+
+    <div class="subsection-title">Videos Not Loading (Blank Thumbnails)</div>
+    <p class="body-text">If video thumbnails appear blank: (1) check the Asset Library — if videos are missing, they may have been lost during a server restart, (2) try regenerating the video, (3) the platform uses HTTP Range requests for video streaming — if your browser doesn't support Range, videos won't play. All modern browsers support this.</p>
+
+    <div class="subsection-title">Music Video — ASR Can't Transcribe</div>
+    <p class="body-text">Z.ai's ASR is optimized for speech, not music. If you see "ASR could not transcribe this audio," that's expected for songs. Paste your lyrics manually in the Edit Lyrics step, or import an SRT file with verified timestamps.</p>
+
+    <div class="subsection-title">Music Video — Duration Mismatch Warning</div>
+    <p class="body-text">If you see "Your scenes cover only Xs of a Ys song," you need to generate more video clips for your scenes. Each scene needs a video clip (generated or uploaded). Scenes without clips show a black placeholder during rendering.</p>
+
+    <div class="subsection-title">Video Generation — Z.ai Rate Limit (429)</div>
+    <p class="body-text">Z.ai's video endpoint has a strict rate limit (~1 request every 5-10 minutes). The platform auto-retries in the background with 60-second waits (up to 5 attempts). If you see "Z.ai is rate-limiting video requests," wait a few minutes and try again.</p>
+
+    <div class="subsection-title">Video Generation — Parameter Rejected (1214)</div>
+    <p class="body-text">The platform automatically strips parameters that Z.ai rejects and retries with a minimal body. If you still see this error, try a shorter prompt (under 300 characters) or disable style/realism options.</p>
+
+    <div class="subsection-title">Render Fails (404 or 502)</div>
+    <p class="body-text">If the Video Editor render returns 404, ensure you have clips on the timeline. If you get 502, the render took too long — try fewer clips or lower resolution. The render endpoint has been fixed to the correct path (<code class="code">/api/editor/render</code>).</p>
+
+    <div class="subsection-title">TTS Fails (1214 — MP3 Not Supported)</div>
+    <p class="body-text">Z.ai's TTS supports WAV and PCM only — MP3 is rejected. The platform defaults to WAV. If you see this error, ensure the format dropdown shows "WAV (recommended)" — MP3 is disabled in the UI.</p>
+
+    <div class="subsection-title">Clean Up Failed Jobs</div>
+    <p class="body-text">If the "Your generations" panel has failed/stuck jobs, click the <strong>"Clean up failed"</strong> button (appears automatically when failed jobs exist). This removes failed and expired jobs, plus jobs stuck in "processing" for over 1 hour.</p>
+
+    <!-- Chapter 25: GitHub Upload -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 25</div>
+        <h2 class="section-title">Upload to GitHub</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">The Admin Panel includes a one-click GitHub upload feature that pushes the entire application source code to a GitHub repository. This is accessible from <strong>Admin Panel → API tab → Upload to GitHub</strong> section.</p>
+
+    <div class="subsection-title">How to Upload</div>
+    <ol class="steps">
+        <li><strong>Get a GitHub token</strong> — Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic). Click "Generate new token (classic)", check the <strong>repo</strong> scope, and copy the <code class="code">ghp_...</code> token.</li>
+        <li><strong>Open Admin Panel → API tab</strong> — Scroll to the "Upload to GitHub" section</li>
+        <li><strong>Paste your token</strong> — In the "GitHub personal access token" field (password input — never stored)</li>
+        <li><strong>Enter repository name</strong> — Default is "vortexai-studio"; change if desired</li>
+        <li><strong>Choose visibility</strong> — Public or Private</li>
+        <li><strong>Click "Upload to GitHub"</strong> — The platform creates the repo (if it doesn't exist) and pushes all source code</li>
+    </ol>
+
+    <div class="callout">
+        <div class="callout-title">What Gets Uploaded</div>
+        All 145 source files (2.13 MB): <code class="code">src/</code> (views, API routes, lib), <code class="code">prisma/</code> (schema), <code class="code">mini-services/</code> (WebSocket), config files, <code class="code">README.md</code>, and the user guide PDF. Excluded: <code class="code">node_modules/</code>, <code class="code">.next/</code>, <code class="code">storage/</code>, <code class="code">db/</code>, <code class="code">.env</code>.
+    </div>
+
+    <div class="callout callout-warning">
+        <div class="callout-title">Security</div>
+        The GitHub token is used ONLY for the upload request — it is never stored in the database, environment, or git config. After the push, the token is removed from the git remote URL. The upload is admin-only.
+    </div>
+
+    <div class="subsection-title">CLI Alternative</div>
+    <p class="body-text">For command-line uploads, use the included script:</p>
+    <p class="body-text" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--c-card); padding: 10px; border-radius: 6px; border: 1px solid var(--c-border);">python3 scripts/upload-to-github.py --token ghp_xxx --repo vortexai-studio</p>
+
+    <!-- Chapter 26: Honest Lip-Sync Deep Dive -->
+    <div class="chapter-header">
+        <div class="section-tag">Chapter 26</div>
+        <h2 class="section-title">Lip-Sync — Honest Capability Guide</h2>
+        <div class="divider"></div>
+    </div>
+
+    <p class="body-text">This chapter provides a thorough, honest explanation of what the platform can and cannot do regarding character lip-sync in music videos. The platform follows a strict policy: <strong>never claim capabilities the AI model cannot deliver</strong>.</p>
+
+    <div class="subsection-title">What "Lip-Sync" Means</div>
+    <p class="body-text">True lip-sync (lip synchronization) means a character's mouth shapes and movements precisely match the vocal sounds being sung — including phonemes (consonant/vowel shapes), held notes, pauses, syllable timing, and emotional expression. This requires <strong>audio-conditioned facial animation</strong> — a model that takes an audio track as input and drives mouth shapes from the audio waveform.</p>
+
+    <div class="subsection-title">What Z.ai cogvideox Supports</div>
+    <p class="body-text">Z.ai's cogvideox-2 video model accepts:</p>
+    <ul style="color: var(--c-muted); font-size: 13px; margin: 8px 0 14px 20px; line-height: 1.7;">
+        <li>Text prompts (text-to-video)</li>
+        <li>Reference images (image-to-video, multi-reference)</li>
+        <li>Optional audio generation (ambient sound effects, NOT vocal-driven animation)</li>
+        <li>Quality mode (speed vs quality)</li>
+    </ul>
+    <p class="body-text">It does <strong>NOT</strong> accept:</p>
+    <ul style="color: var(--c-muted); font-size: 13px; margin: 8px 0 14px 20px; line-height: 1.7;">
+        <li>Audio tracks for facial animation conditioning</li>
+        <li>Phoneme-level timing data</li>
+        <li>Lyric-to-mouth-shape mapping</li>
+        <li>Per-character singing instructions</li>
+    </ul>
+
+    <div class="callout callout-danger">
+        <div class="callout-title">The Hard Truth</div>
+        <strong>Accurate, continuous lip-sync is NOT possible</strong> with Z.ai's cogvideox model. The model cannot take your song's audio and drive character mouth movements from it. No parameter, configuration, or workaround can make the model sync mouths to vocals. This is a fundamental model limitation, not a bug or missing feature.
+    </div>
+
+    <div class="subsection-title">What the Platform Does Instead</div>
+    <p class="body-text">The Music Video Studio offers two modes, both honestly labeled:</p>
+
+    <div class="card">
+        <div class="card-title">Music Montage Mode (Recommended)</div>
+        <p class="card-text">Visuals are cut to the music with scene transitions. Characters appear in scenes with gestures and expressions matching the mood, but their mouths do NOT sync to vocals. Lyric captions (subtitles) are burned into the video at user-specified timestamps. The song plays as the continuous master audio track at original speed and pitch. This is the honest, production-ready approach.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Singing Characters Mode (Limited)</div>
+        <p class="card-text">Characters appear on screen as if performing, but the platform clearly labels every scene with "LIP-SYNC NOT SUPPORTED" in red. The result is visually similar to Music Montage — characters are present, but mouths move randomly or stay static. The platform never labels this as "synchronized" or "lip-synced."</p>
+    </div>
+
+    <div class="subsection-title">Why Not Add External Lip-Sync Tools?</div>
+    <p class="body-text">Tools like Wav2Lip, SadTalker, and MuseTalk can perform audio-driven facial animation. However, adding these would violate the platform's core rules:</p>
+    <ul style="color: var(--c-muted); font-size: 13px; margin: 8px 0 14px 20px; line-height: 1.7;">
+        <li><strong>"Z.ai must be the exclusive external AI provider"</strong> — no other AI APIs</li>
+        <li><strong>"No additional paid AI provider integrations"</strong> — no external dependencies</li>
+        <li><strong>"Do not fabricate capabilities"</strong> — don't claim sync that didn't happen</li>
+    </ul>
+
+    <div class="subsection-title">Recommended Workflow for Music Videos</div>
+    <ol class="steps">
+        <li><strong>Upload your song</strong> — Original speed, original pitch, full duration</li>
+        <li><strong>Paste lyrics manually</strong> — ASR can't transcribe music; paste your lyrics in the Edit Lyrics step</li>
+        <li><strong>Set timestamps manually or import SRT</strong> — Use an SRT file for verified timing</li>
+        <li><strong>Plan 8-second scenes</strong> — The AI generates visual prompts matching each lyric section</li>
+        <li><strong>Generate clips per scene</strong> — Use 3D Animation style preset for child-friendly visuals</li>
+        <li><strong>Enable lyric overlays</strong> — Burn in subtitle captions at each scene's timestamp</li>
+        <li><strong>Render with transitions</strong> — Use fade or dissolve transitions between scenes</li>
+        <li><strong>Result</strong> — A polished music video with your song as the soundtrack, characters in each scene, and synced lyric captions — honestly labeled as music montage</li>
+    </ol>
+
+    <div class="callout">
+        <div class="callout-title">What You Get</div>
+        Your song plays continuously at original speed and pitch. Characters appear in 8-second scenes with 3D animation matching the mood. Lyric captions appear at the right times. Transitions flow smoothly between scenes. The video covers the full song duration. Everything is honestly labeled — no fake sync claims.
+    </div>
+
+</div>
+
+<!-- ============ ENDING ============ -->
+<div class="ending">
+    <div class="ending-divider"></div>
+    <h2 class="ending-big">Create freely.<br>Create boldly.</h2>
+    <p class="ending-text">VortexAI Studio is your complete, free AI video production studio — powered by Z.ai, built for creators. No subscriptions. No credits. No limits on creativity.</p>
+    <div class="ending-brand">VortexAI Studio</div>
+    <div class="ending-meta">USER GUIDE · VERSION 2.0 · POWERED BY Z.AI</div>
+</div>
+
+</body>
+</html>
