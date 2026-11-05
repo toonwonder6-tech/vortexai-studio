@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Z.ai AI Video Production Platform - Prisma schema
 
 generator client {
   provider = "prisma-client-js"
@@ -14,19 +10,231 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         String   @default("user") // "user" | "admin"
+  status       String   @default("active") // "active" | "suspended" | "deleted"
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions     Session[]
+  projects     Project[]
+  jobs         GenerationJob[]
+  assets       Asset[]
+  characters   Character[]
+  templates    PromptTemplate[]
+  usageLogs    UsageLog[]
+  activityLogs ActivityLog[]
 }
 
-model Post {
+model Session {
   id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  type        String   // "video" | "image" | "director" | "audio" | "script" | "editor" | "music-video"
+  status      String   @default("active") // "active" | "archived" | "deleted"
+  description String?
+  config      String?  // JSON string
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobs     GenerationJob[]
+  assets   Asset[]
+
+  @@index([userId])
+}
+
+model GenerationJob {
+  id             String   @id @default(cuid())
+  userId         String
+  projectId      String?
+  type           String   // "video" | "image" | "audio" | "text"
+  status         String   @default("waiting") // "waiting" | "submitted" | "processing" | "completed" | "failed" | "expired"
+  providerTaskId String?
+  prompt         String?
+  negativePrompt String?
+  model          String?
+  config         String?
+  resultUrl      String?
+  resultMeta     String?
+  error          String?
+  progress       Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([status])
+  @@index([providerTaskId])
+}
+
+model Asset {
+  id         String   @id @default(cuid())
+  userId     String
+  projectId  String?
+  type       String   // "image" | "video" | "audio" | "file"
+  name       String
+  filename   String
+  mimeType   String
+  size       Int      @default(0)
+  url        String
+  source     String   @default("upload") // "upload" | "generated" | "ai-director"
+  meta       String?
+  createdAt  DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([projectId])
+}
+
+model Character {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  category    String   @default("character")
+  referenceUrl String?
+  meta        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PromptTemplate {
+  id        String   @id @default(cuid())
+  userId    String?
+  title     String
+  content   String
+  category  String   @default("general")
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([category])
+}
+
+model PlatformSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model UsageLog {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  model     String?
+  status    String
+  duration  Int      @default(0)
+  meta      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  meta      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Music Video workflow models
+
+model MusicVideoProject {
+  id          String   @id @default(cuid())
+  userId      String
+  projectId   String?
+  name        String
+  status      String   @default("active")
+  mode        String   @default("montage")
+  songUrl     String?
+  songName    String?
+  songDuration Float?
+  lyricsText  String?
+  srtContent  String?
+  config      String?
+  lipSyncSupported Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  scenes      Scene[]
+  lyricLines  LyricLine[]
+
+  @@index([userId])
+}
+
+model Scene {
+  id           String   @id @default(cuid())
+  mvProjectId  String
+  index        Int
+  startTime    Float
+  endTime      Float
+  lyricText    String?
+  characterId  String?
+  characterName String?
+  visualPrompt String?
+  cameraDirection String?
+  videoUrl     String?
+  videoJobId   String?
+  videoStatus  String   @default("pending")
+  imageUrl     String?
+  lipSyncStatus String  @default("n/a")
+  error        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  mvProject MusicVideoProject @relation(fields: [mvProjectId], references: [id], onDelete: Cascade)
+
+  @@index([mvProjectId])
+}
+
+model LyricLine {
+  id          String   @id @default(cuid())
+  mvProjectId String
+  index       Int
+  text        String
+  startTime   Float?
+  endTime     Float?
+  source      String   @default("manual")
+  createdAt   DateTime @default(now())
+
+  mvProject MusicVideoProject @relation(fields: [mvProjectId], references: [id], onDelete: Cascade)
+
+  @@index([mvProjectId])
 }
